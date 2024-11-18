@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
+#define UP 72
+#define DOWN 80
+#define ESC 27
+#define ENTER 13
+
+void set_color(int color_num){
+
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+//
+SetConsoleTextAttribute(hConsole,color_num);
+}
+
+void show_menu(int cursor) {
+    system("cls"); // Clear the terminal
+    set_color(15); // Set default color to white.
+    // Highlight the selected menu option based on the cursor position.
+    for (int i = 0; i < 3; i++) {
+        if (i == cursor) {
+            set_color(4); // Highlight selected option in red.
+        }
+
+        switch(i) {
+            case 0:
+                printf("NEW\n");
+                break;
+            case 1:
+                printf("DISPLAY\n");
+                break;
+            case 2:
+                printf("EXIT\n");
+                break;
+        }
+        set_color(15); // Reset color to white after printing each option.
+    }
+}
+
+
+int main() {
+    int cursor = 0;  // Initialize cursor position
+    show_menu(cursor);  // Display the initial menu
+
+    int isRunning = 1;  // Flag to keep the menu running
+
+    while (isRunning) {
+        char key = getch();  // Get user input
+
+        // Handle special keys (e.g., arrow keys)
+        if (key == -32) {
+            key = getch();  // Get the actual key code
+        }
+
+
+        if (key == UP) {  // Move cursor up
+            cursor = (cursor == 0) ? 2 : cursor - 1;  // Wrap to last option if at top
+            show_menu(cursor);
+        } else if (key == DOWN) {  // Move cursor down
+            cursor = (cursor == 2) ? 0 : cursor + 1;  // Wrap to first option if at bottom
+            show_menu(cursor);
+        } else if (key == ESC) {  // Exit menu
+            isRunning = 0;
+        }
+    }
+
+    set_color(15);  // Reset color to default
+    return 0;
+}
