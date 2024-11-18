@@ -1,0 +1,29 @@
+int main(){
+    char choice;
+
+    printf("Choice A\n");
+    printf("============================\n");
+    printf("Choice B\n");
+    printf("============================\n");
+    printf("Choice C\n");
+    printf("Choose any choice from above: \n");
+    scanf(" %c", &choice);
+
+    switch(choice){
+        case 'A':
+        case 'a':
+            printf("Word is Apple");
+            break;
+        case 'B':
+        case 'b':
+            printf("Word is Ball");
+            break;
+        case 'C':
+        case 'c':
+            printf("Word is Contest");
+            break;
+        default:}
+            printf("No valid input");
+    }
+    return 0;
+}
