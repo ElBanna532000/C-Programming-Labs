@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "conio.h"
+
+
+int main()
+{
+    int size;
+    printf("Enter size of Matrix: ");
+    scanf("%d",&size);
+
+    int row=1, col=(size+1)/2, num;
+    for(num=1; num<=size*size; num++){
+        gotoxy(col*4,row*3);                
+        sleep(2);
+        printf("%d", num);
+
+        if(num%size==0){
+            row++;
+            if(row>size)
+                row=1;
+        }
+        else{
+            row--;
+            col--;
+
+            if(row<1)
+                row=size;
+            if(col<1)
+                col=size;
+        }
+    }
+
+
+
+    return 0;
+}
