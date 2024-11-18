@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int x=11;
+    char y='m';
+    char c;
+    float z=6.23;
+
+    //1-test the different format specifies with "printf"
+    printf("x = %d \t y = %c \t z = %0.2f \n", x,y,z);
+
+    //2-read a character from the user and print it and its ASCII code
+    printf("Enter any character: ");
+    scanf("%c", &c);
+    printf("Character entered is %c \n",c);
+    printf("ASCII code for %c is %d\n", c, c);
+
+    //3-display the octal and hexdecimal representation of an integer
+    printf("value of %d (in octal) is: %o\n",x, x);
+    printf("value of %d (in hexdecimal) is: %x\n", x, x);
+
+    return 0;
+}
