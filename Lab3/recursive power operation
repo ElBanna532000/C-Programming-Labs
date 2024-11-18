@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int power(int num, int pow){
+    if(pow != 0)
+        return (num * power(num, pow-1));
+    else
+        return 1;
+}
+
+int main()
+{
+    int n= power(2,2);
+    printf("%d", n);
+    return 0;
+}
