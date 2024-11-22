@@ -48,37 +48,82 @@ void show_menu(int cursor) {
 
 int addEmployee(Employee employees[], int count){
     int flag=1;
+    int target_id;
     int again;
     if(count >= SIZE){
         printf("Size is full, cannot add a new employee\n");
         return count;
     }
-        while(flag){
-            printf("Enter employee name: ");
-            scanf("%s", employees[count].name);
+    while(flag){
+        char ch;
+        while(1){
+            int i;
+            int isFound=0;
 
             printf("Enter employee id: ");
-            scanf("%d", &employees[count].id);
-
-            printf("Enter employee salary: ");
-            scanf("%d", &employees[count].salary);
-
-            printf("Employee added successfully!\n\n");
-            count++;
-
-            printf("If you want to add a new employee press 1, if not press 0: ");
-            scanf("%d", &again);
-            if(again==0)
-                flag=0;
-            else if(again==1)       // need to handle if user inputs any input other than 1 and 2
-                flag=1;
+            if(!(scanf("%d%c", &employees[count].id, &ch)==2 && ch=='\n')){
+                printf("Invalid input. Please enter a valid numeric ID.\n");
+                while(getchar()!='\n');
+                continue;
+            }
+            else if(employees[count].id <= 0){
+                printf("ID cannot be 0 or a negative number.\n");
+                continue;
+            }
             else{
-                printf("Invalid input\n");
-                flag=0;
+                for(i=0; i<count; i++){
+                    if(employees[count].id == employees[i].id){
+                        printf("ID already exists, try a different one\n");
+                        isFound=1;
+                        break;
+                    }
+                }
             }
 
+            if(!isFound){   //if(0)
+                break;
+            }
         }
-        return count;
+
+        printf("Enter employee name: ");
+        scanf("%s", employees[count].name);
+        while(1){
+            printf("Enter employee salary: ");
+            if(!(scanf("%d%c", &employees[count].salary, &ch)==2 && ch=='\n')){
+                printf("Invalid input. Please enter a valid numeric Salary.\n");
+                while(getchar()!='\n');
+                continue;
+            }else if(employees[count].salary <= 0){
+                printf("Salary cannot be 0 or a negative number\n");
+                continue;
+            }
+            break;
+        }
+        printf("Employee added successfully!\n\n");
+        count++;
+        printf("================================================\n");
+
+        printf("If you want to add a new employee press 1, if not press 0: ");
+        while (1) {
+            if (!(scanf("%d%c", &again, &ch) == 2 && ch == '\n')) {
+                printf("Invalid input. Please enter 1 to add another employee or 0 to exit: ");
+                while (getchar() != '\n');  // Clear input buffer
+                continue;
+            }
+            if(again == 1) {
+                flag = 1;
+                break;  // Continue to add another employee
+            }else if(again == 0) {
+                flag = 0;
+                break;
+            }else {
+                printf("Invalid input. Please enter 1 to add another employee or 0 to exit: ");
+            }
+        }
+    }
+    printf("Goodbye, Press any ENTER to return to the main menu...\n");
+    getch();
+    return count;
 }
 
 void displayEmployees(Employee employees[], int count){
@@ -98,6 +143,7 @@ void modifyEmployee(Employee employees[], int count){
     int target_id;
     int found=0;
     int choice;
+    char ch;
     printf("Modifying Employees\n");
     printf("================================================\n");
     printf("Enter employee ID that you want to modify on: ");
@@ -115,33 +161,60 @@ void modifyEmployee(Employee employees[], int count){
             switch (choice){
                 case 1:
                     printf("Changing ID\n");
-                    printf("Enter new ID for employee %s (current ID: %d): ", employees[i].name, employees[i].id);
-                    scanf("%d", &employees[i].id);
+                    while(1){
+                        printf("Enter new ID for employee %s (current ID: %d): ", employees[i].name, employees[i].id);
+                        if(!(scanf("%d%c", &employees[i].id, &ch)==2 && ch=='\n')){
+                            printf("Invalid input. Please enter a valid numeric ID.\n");
+                            while(getchar()!='\n');
+                            continue;
+                        }
+                        else if(employees[i].id <= 0){
+                            printf("ID cannot be 0 or a negative number.\n");
+                            continue;
+                        }
+                        break;
+                    }
+
                     printf("ID has been changed successfully!\n");
                     break;
                 case 2:
                     printf("Changing Name\n");
-                    printf("Enter new Name for employee %s (current ID: %d): ", employees[i].name, employees[i].id);
+                    printf("Enter new Name foModifyingr employee %s (current ID: %d): ", employees[i].name, employees[i].id);
                     scanf("%s", employees[i].name);
                     printf("Name has been changed successfully!\n");
+                    while(getchar()!='\n');
                     break;
                 case 3:
                     printf("Changing Salary\n");
-                    printf("Enter new Salary for employee %s (current ID: %d): ", employees[i].name, employees[i].id);
-                    scanf("%d", &employees[i].salary);
-                    printf("Salary has been changed successfully!\n");
+                    while(1){
+                        printf("Enter new Salary for employee %s (current ID: %d): ", employees[i].name, employees[i].id);
+
+                        if(!(scanf("%d%c", &employees[i].salary, &ch)==2 && ch=='\n')){
+                            printf("Invalid input. Please enter a valid numeric Salary.\n");
+                            while(getchar()!='\n');
+                            continue;
+                        }else if(employees[i].salary <= 0){
+                            printf("Salary cannot be 0 or a negative number\n");
+                            continue;
+                        }
+                        printf("Salary has been changed successfully!\n");
+                        break;
+                    }
                     break;
                 default:
                     printf("Not a valid input");
                     break;
             }
         }
+    }
+    if(!found){
+        printf("ID %d is not found\n", target_id);
         getch();
     }
-    if(!found)
-        printf("ID %d is not found\n", target_id);
+
     printf("Press any key to return to the menu...");
     getch();
+
 }
 
 
@@ -162,16 +235,10 @@ int main() {
 
             if(cursor==0){
                 count = addEmployee(employees,count);
-                //printf("%d", count);
-                //system("clear");
-                //show_menu(cursor);
-                while(getch()!='\n');
                 show_menu(cursor);
             }
 
             else if(cursor==1){
-                // Display all employees
-                //printf("%d", count);
                 printf("Displaying all Employees\n");
                 printf("================================================\n");
                 displayEmployees(employees, count);
@@ -181,7 +248,7 @@ int main() {
                 show_menu(cursor);
             }
             else if(cursor==2){
-                //Modifying employees
+
                 displayEmployees(employees, count);
                 modifyEmployee(employees, count);
                 system("clear");
@@ -211,4 +278,5 @@ int main() {
     }
     textcolor(BLACK);   // Reset color to default
     return 0;
-}
+    }
+
